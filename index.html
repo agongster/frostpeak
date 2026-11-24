@@ -276,7 +276,8 @@ const fmt = s => { s = Math.ceil(s); return `${Math.floor(s/60)}:${String(s%60).
 const join = a => a.length < 2 ? a.join("") : a.slice(0,-1).join(", ") + " and " + a[a.length-1];
 
 // ---- Opening sequence (SAMPLE TEXT: replace freely) ----
-// Art: put 16:9 images at opening/1.png … opening/4.png. Until then a labeled placeholder shows.
+// Art: opening/1.jpg … opening/4.jpg (web-sized copies of the scene PNGs in the same folder).
+OPENING_PRELOAD: for (let i = 1; i <= 4; i++) new Image().src = `opening/${i}.jpg`;
 const OPENING = [
   { title:"Rescue at Frostpeak", stamp:null,
     text:["Most of the Frostpeak Rescue Guild is out on calls tonight.", "You’re the dispatcher on duty."],
@@ -296,7 +297,7 @@ function renderOpening() {
   const s = OPENING[sceneIdx], last = sceneIdx === OPENING.length - 1, n = sceneIdx + 1;
   $("s-opening").innerHTML = `
     <div class="scene">
-      <div class="scene-art rise" id="sceneArt"><div><b>Scene ${n} art</b>${s.art}<br><span class="small">opening/${n}.png</span></div></div>
+      <div class="scene-art filled rise"><img src="opening/${n}.jpg" alt="${s.art}"></div>
       ${s.stamp ? `<span class="stamp rise" style="animation-delay:.25s">${s.stamp}</span>` : ""}
       ${s.text.map((t, i) => `<p class="rise" style="animation-delay:${.35 + i * .45}s">${t}</p>`).join("")}
       <div class="row rise" style="justify-content:space-between;animation-delay:${.4 + s.text.length * .45}s">
@@ -308,10 +309,6 @@ function renderOpening() {
       </div>
     </div>`;
   $("pageTitle").textContent = s.title;
-  // Swap the placeholder for real art when the file exists
-  const im = new Image();
-  im.onload = () => { const a = $("sceneArt"); if (a) { a.classList.add("filled"); a.innerHTML = ""; im.alt = s.art; a.appendChild(im); } };
-  im.src = `opening/${n}.png`;
   $("sceneNext").onclick = () => { if (last) show("intro"); else { sceneIdx++; renderOpening(); } };
   if (!last) $("skipBtn").onclick = () => show("intro");
 }
