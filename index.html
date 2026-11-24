@@ -1,165 +1,209 @@
-<title>Guild Command</title>
+<title>Rescue at Frostpeak</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@600;700;800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
 <style>
-/* Single warm-paper theme matching the design mockups (deliberately one look in light and dark). */
+/* Layout: the guildhall. A parchment page, a cork roster board with pinned photo cards (as in the art),
+   and paper records for profiles and reports. One warm look by design, not a light/dark pair. */
 :root {
-  --bg: #f2efe6;        /* page */
-  --card: #fdfcf7;      /* cards, buttons */
-  --line: #cfd1c4;
-  --ink: #1f2620;
-  --muted: #5f6a60;
-  --green: #3b5444;     /* accent: timer, button text */
-  --green-soft: #e3e8df;
-  --red: #a2412f;
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --page: #efe4cc;       /* parchment wall */
+  --paper: #fbf6ea;      /* records, cards */
+  --ink: #2c2117;        /* warm near-black */
+  --muted: #7b6a55;
+  --rule: #dccaa6;
+  --wood: #5b3d26;
+  --cork: #b98d5f;
+  --brass: #c9a14a;
+  --green: #2f4a3a;      /* guild banner */
+  --green-ink: #f6efdd;
+  --amber: #d6973a;      /* lantern */
+  --seal: #a8402c;       /* wax seal / clock wedge */
+  --display: "Alegreya", "Iowan Old Style", Georgia, serif;
+  --body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
-body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font);
-  padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.wrap { max-width: 1010px; margin: 0 auto; }
-h1, h2, h3 { margin: 0; line-height: 1.2; color: var(--ink); }
-h1 { font-size: clamp(1.6rem, 3.4vw, 2.1rem); font-weight: 800; text-transform: uppercase; letter-spacing: .01em; text-wrap: balance; }
-h2 { font-size: 1.75rem; font-weight: 700; }
+body { background: var(--page); color: var(--ink); font: 18px/1.55 var(--body);
+  padding-block: 28px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1020px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1.15; text-wrap: balance; }
+h1 { font-size: clamp(1.9rem, 4.2vw, 2.6rem); font-weight: 800; }
+h2 { font-size: 1.7rem; font-weight: 700; }
 h3 { font-size: 1.3rem; font-weight: 700; }
-h3.caps { font-size: 1.15rem; font-weight: 800; text-transform: uppercase; letter-spacing: .01em; }
-p, ul { margin: 0; }
+p, ul, figure { margin: 0; }
 .muted { color: var(--muted); }
-.small { font-size: .9rem; }
-.label { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.small { font-size: .92rem; }
 section > * + * { margin-top: 28px; }
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
 
-/* Header: title left, timer right */
-.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 36px; min-height: 66px; }
-.timer { background: var(--green-soft); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; min-width: 110px; flex: none; }
-.timer b { display: block; font-size: 1.75rem; font-weight: 700; color: var(--green); line-height: 1.1; font-variant-numeric: tabular-nums; }
-.timer span { font-size: .68rem; font-weight: 700; letter-spacing: .04em; color: var(--green); text-transform: uppercase; }
-.timer.low b { color: var(--red); }
+/* Header */
+.top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding-bottom: 20px; margin-bottom: 32px; border-bottom: 2px solid var(--rule); }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--green); font-weight: 700; font-size: .95rem; margin-bottom: 6px; }
+.brand svg { width: 22px; height: 28px; flex: none; }
+.clock { display: flex; align-items: center; gap: 10px; flex: none; }
+.clock svg { width: 50px; height: 50px; }
+.clock b { display: block; font: 700 1.6rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.clock span { font-size: .85rem; color: var(--muted); }
+.clock.low b { color: var(--seal); }
 
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 28px 32px; }
-
-button { font: 700 .85rem var(--font); letter-spacing: .03em; text-transform: uppercase; color: var(--green);
-  background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 14px 24px; cursor: pointer; }
-button.primary { background: var(--green); border-color: var(--green); color: var(--card); }
+/* Buttons */
+button { font: 700 1rem var(--body); color: var(--wood); background: transparent; border: 1.5px solid var(--wood); border-radius: 8px; padding: 11px 22px; cursor: pointer; }
+button:hover:not(:disabled) { background: rgba(91,61,38,.07); }
+button.primary { background: var(--green); border-color: var(--green); color: var(--green-ink); }
+button.primary:hover:not(:disabled) { background: #253c2f; }
 button:disabled { opacity: .4; cursor: not-allowed; }
-button:hover:not(:disabled) { border-color: var(--green); }
-:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.spread { justify-content: space-between; }
 
-.portrait { display: block; width: 100%; aspect-ratio: 1; max-width: 100%; object-fit: cover; background: #fff; border-radius: 10px; }
+/* Paper record */
+.sheet { background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 30px 34px; box-shadow: 0 1px 0 var(--rule), 0 10px 24px -14px rgba(60,40,20,.35); min-width: 0; }
+.sheet-label { font-family: var(--display); font-weight: 700; font-size: .95rem; color: var(--green); padding-bottom: 10px; border-bottom: 2px solid var(--green); margin-bottom: 4px; }
+.ledger { list-style: none; padding: 0; }
+.ledger li { padding: 13px 0; border-bottom: 1px dashed var(--rule); }
+.ledger li:last-child { border-bottom: 0; }
 
-/* Opening sequence */
-.scene { display: grid; gap: 24px; max-width: 820px; }
-.scene-art { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: var(--card); border: 2px dashed var(--line);
-  display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; color: var(--muted); font-size: .9rem; }
-.scene-art.filled { border: 0; padding: 0; }
-.scene-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.scene-art b { display: block; color: var(--green); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
-.scene p { font-size: 1.2rem; max-width: 62ch; }
-.scene .stamp { justify-self: start; font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--red); border: 2px solid var(--red); border-radius: 4px; padding: 2px 8px; transform: rotate(-2deg); }
-.dots { display: flex; gap: 8px; }
-.dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
-.dots i.on { background: var(--green); }
-.rise { animation: rise .55s ease-out both; }
-@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
-@media (prefers-reduced-motion: reduce) { .rise { animation: none; } }
+/* Pinned photo (matches the roster board in the art) */
+.photo { position: relative; background: var(--paper); padding: 8px 8px 0; border-radius: 6px; box-shadow: 0 2px 0 rgba(60,40,20,.15), 0 8px 18px -10px rgba(60,40,20,.5); }
+.photo img { display: block; width: 100%; aspect-ratio: 1; max-width: 100%; object-fit: cover; border-radius: 3px; background: #fff; }
+.pin { position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #f1d68a, var(--brass) 55%, #8a6a24); box-shadow: 0 2px 2px rgba(0,0,0,.3); z-index: 1; }
+.photo figcaption, .photo .cap { display: block; padding: 10px 4px 12px; font-family: var(--display); font-weight: 700; font-size: 1.12rem; line-height: 1.2; overflow-wrap: anywhere; color: var(--ink); }
 
-/* Intro */
-.needs { padding-left: 1.2em; display: grid; gap: 10px; }
+/* Opening */
+.scene-art { border: 6px solid var(--wood); border-radius: 10px; overflow: hidden; background: var(--wood); max-width: 100%; }
+.scene-art img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.scene p { font-size: 1.3rem; max-width: 60ch; }
+.scene p + p { margin-top: 10px; }
+.scene .fade { animation: fade .6s ease-out both; }
+@keyframes fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .scene .fade { animation: none; } }
 
-/* Roster */
-.roster { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; }
-.person { text-transform: none; letter-spacing: 0; text-align: left; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-  padding: 12px; display: grid; gap: 10px; font-size: 1.05rem; min-width: 0; }
-.person b { overflow-wrap: anywhere; padding: 0 4px; line-height: 1.3; }
-.person small { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding: 0 4px 4px; }
-.person.on { border: 2px solid var(--green); padding: 11px; }
-.person.on small { color: var(--green); }
+/* Brief */
+.brief { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+.brief .lede { font-size: 1.25rem; }
+.needs-list { list-style: none; padding: 0; counter-reset: n; }
+.needs-list li { padding: 14px 0; border-bottom: 1px dashed var(--rule); }
+.needs-list li:last-child { border-bottom: 0; }
+.needs-list b { display: block; font-family: var(--display); font-size: 1.15rem; }
+
+/* Roster board */
+.board { background: var(--cork); border: 10px solid var(--wood); border-radius: 10px; padding: 34px 26px 26px;
+  background-image: radial-gradient(rgba(91,61,38,.18) 1px, transparent 1.4px), radial-gradient(rgba(255,240,210,.12) 1px, transparent 1.4px);
+  background-size: 9px 9px, 13px 13px; background-position: 0 0, 4px 6px; }
+.roster { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px 22px; }
+.card-btn { all: unset; cursor: pointer; display: block; border-radius: 6px; transition: transform .15s; }
+.card-btn:hover .photo { transform: translateY(-2px); }
+.card-btn:focus-visible { outline: 3px solid var(--amber); outline-offset: 4px; }
+.card-btn .photo { transition: transform .15s, box-shadow .15s; }
+.card-btn .status { display: block; padding: 0 4px 12px; margin-top: -6px; font-size: .85rem; color: var(--muted); }
+.card-btn.on .photo { box-shadow: 0 0 0 4px var(--green), 0 8px 18px -10px rgba(60,40,20,.5); }
+.card-btn.on .status { color: var(--green); font-weight: 700; }
+
+.tray { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.slots { display: flex; gap: 12px; flex-wrap: wrap; flex: 1; min-width: 0; }
+.slot { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 6px 14px 6px 6px; border-radius: 40px; background: var(--paper); border: 1px solid var(--rule); font-weight: 700; font-size: .95rem; }
+.slot img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex: none; }
+.slot.empty { background: transparent; border: 1.5px dashed var(--muted); color: var(--muted); font-weight: 400; padding: 6px 16px; min-height: 52px; }
 
 /* Profile */
-.profile { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: start; }
-.profile h2 { margin-top: 24px; overflow-wrap: anywhere; }
-.bullets { min-height: 440px; min-width: 0; }
-.bullets ul { padding-left: 1.2em; display: grid; gap: 30px; }
-.bullets li { padding-left: 4px; }
+.profile { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 44px; align-items: start; }
+.profile .sheet { min-height: 100%; }
+.profile .ledger li { font-size: 1.15rem; padding: 17px 0; }
 
 /* Confirm */
-.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 300px)); gap: 40px; }
-.pair h2 { margin-top: 20px; overflow-wrap: anywhere; }
-
-@media (max-width: 720px) {
-  .profile { grid-template-columns: 1fr; gap: 24px; }
-  .profile .portrait { max-width: 260px; }
-  .bullets { min-height: 0; }
-  .bullets ul { gap: 16px; }
-  .card { padding: 22px 20px; }
-  .roster { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .pair { gap: 16px; }
-  .pair h2 { font-size: 1.3rem; }
-}
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 260px)); gap: 30px; }
 
 /* Results */
-.need { display: grid; grid-template-columns: 1.6rem 1fr; gap: 4px 10px; padding: 16px 0; border-bottom: 1px solid var(--line); }
-.need:first-child { padding-top: 0; }
-.need:last-child { border-bottom: 0; padding-bottom: 0; }
-.mark { font-weight: 800; }
-.mark.ok { color: var(--green); } .mark.no { color: var(--red); }
-.members { display: grid; gap: 20px; }
-.member-head { display: flex; gap: 18px; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
-.member-head .portrait { width: 80px; flex: none; }
-.member ul { padding-left: 1.2em; margin-top: 6px; display: grid; gap: 4px; }
-.member > div + div { margin-top: 18px; }
-.tag { font-size: .78rem; font-weight: 700; color: var(--muted); }
-.tag.helps { color: var(--green); } .tag.hurts { color: var(--red); }
+.step-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.need-row { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 2px 12px; padding: 14px 0; border-bottom: 1px dashed var(--rule); }
+.need-row:last-child { border-bottom: 0; }
+.need-row b { font-family: var(--display); font-size: 1.12rem; }
+.mk { font: 800 1.15rem var(--display); line-height: 1.3; }
+.mk.ok { color: var(--green); } .mk.no { color: var(--seal); }
+.member { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; align-items: start; }
+.sub { font-family: var(--display); font-weight: 700; color: var(--green); margin-top: 20px; }
+.sub:first-child { margin-top: 0; }
+.plain { padding-left: 1.1em; margin-top: 6px; }
+.plain li + li { margin-top: 4px; }
+.hurt { color: var(--seal); font-size: .88rem; font-weight: 700; }
+.names-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.names-grid .sheet { padding: 22px 24px; }
 .tbl { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; font-size: .92rem; }
-th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px dashed var(--rule); }
+th { font-family: var(--display); font-weight: 700; font-size: .95rem; color: var(--green); border-bottom: 2px solid var(--green); }
 tr:last-child td { border-bottom: 0; }
-th { font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
-td.c { text-align: center; font-weight: 700; color: var(--green); }
+td.c { text-align: center; color: var(--green); font-weight: 800; }
+tr.mine td { background: rgba(47,74,58,.07); }
 
 /* Reflection */
-.chips { display: flex; flex-wrap: wrap; gap: 10px 22px; max-width: 690px; }
-.chip { width: 150px; text-align: left; text-transform: none; letter-spacing: 0; font-size: .9rem; padding: 13px 12px; border-radius: 8px; }
-.chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--card); }
-.lead { font-size: 1.15rem; }
-section#s-reflect > h3 { margin-top: 36px; }
-#missed { width: 100%; max-width: 690px; font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: 8px 0; min-height: 90px; resize: vertical; }
-#missed:focus-visible { outline: 0; border-bottom-color: var(--green); }
-@media (max-width: 560px) { .chip { width: calc(50% - 11px); } }
+.chips { display: flex; flex-wrap: wrap; gap: 10px 12px; }
+.chip { font-weight: 500; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 18px; min-width: 130px; text-align: left; }
+.chip:hover:not(:disabled) { background: var(--paper); border-color: var(--wood); }
+.chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--green-ink); font-weight: 700; }
+.q { font-family: var(--display); font-size: 1.35rem; font-weight: 700; }
+#missed { width: 100%; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; min-height: 110px; resize: vertical; }
+
+@media (max-width: 820px) {
+  .roster { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 16px; }
+  .board { padding: 28px 14px 18px; border-width: 7px; }
+  .brief, .profile, .member { grid-template-columns: 1fr; gap: 24px; }
+  .profile .photo, .member .photo { max-width: 240px; }
+  .trio { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .trio .cap { font-size: .95rem; }
+  .names-grid { grid-template-columns: 1fr; }
+  .sheet { padding: 22px 20px; }
+}
 </style>
 
 <div class="wrap">
-  <div class="top">
-    <h1 id="pageTitle">Rescue at Frostpeak</h1>
-    <div class="timer" id="timer"><b id="clock">2:00</b><span>Time left</span></div>
-  </div>
+  <header class="top">
+    <div>
+      <div class="brand">
+        <svg viewBox="0 0 22 28" aria-hidden="true"><path d="M1 1h20v19l-10 7-10-7z" fill="#2f4a3a"/><path d="M4 18l5-7 3 4 2-2 4 5z" fill="#efe4cc"/><path d="M11 4l1 2.4 2.4 1-2.4 1L11 11l-1-2.6L7.6 7.4 10 6.4z" fill="#efe4cc"/></svg>
+        Frostpeak Rescue Guild
+      </div>
+      <h1 id="pageTitle">Rescue at Frostpeak</h1>
+    </div>
+    <div class="clock" id="timer" hidden>
+      <svg viewBox="0 0 50 50" aria-hidden="true">
+        <circle cx="25" cy="25" r="23" fill="#fbf6ea" stroke="#5b3d26" stroke-width="3"/>
+        <path id="wedge" fill="#e9a596"/>
+        <line id="hand" x1="25" y1="25" x2="25" y2="8" stroke="#2c2117" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="25" cy="25" r="2.5" fill="#2c2117"/>
+      </svg>
+      <div><b id="clock">2:00</b><span>left</span></div>
+    </div>
+  </header>
 
   <!-- OPENING -->
   <section id="s-opening"></section>
 
   <!-- BRIEF -->
   <section id="s-intro" hidden>
-    <div class="card">
-      <p>Villagers are stranded on a mountain. You have 2 minutes to choose a rescue team of 2 from 8 candidates.</p>
-      <p style="margin-top:20px"><b>The rescue needs to:</b></p>
-      <ul class="needs" style="margin-top:10px">
-        <li><b>Complete the mountain journey.</b> Both team members must make it.</li>
-        <li><b>Communicate with villagers.</b> They speak Orbano.</li>
-        <li><b>Anticipate hazards</b> along the route.</li>
-        <li><b>Provide medical aid</b> to injured villagers.</li>
-      </ul>
-      <p class="muted small" style="margin-top:20px">Open any candidate’s profile from the roster, and return as often as you like.</p>
+    <div class="brief">
+      <div>
+        <p class="lede">Villagers are stranded on the mountain. Choose a rescue team of <b>3</b> from the <b>8</b> guild members on call. You have <b>2 minutes</b>.</p>
+        <p class="muted" style="margin-top:16px">Open anyone’s record from the roster board, and come back to it as often as you like.</p>
+        <div style="margin-top:28px"><button class="primary" id="beginBtn">Begin mission</button></div>
+      </div>
+      <div class="sheet">
+        <div class="sheet-label">The rescue needs to</div>
+        <ul class="needs-list">
+          <li><b>Complete the mountain journey</b>Every team member has to make it up.</li>
+          <li><b>Communicate with villagers</b>They speak Orbano.</li>
+          <li><b>Anticipate hazards</b>The route is icy and changing.</li>
+          <li><b>Provide medical aid</b>Some villagers are injured.</li>
+        </ul>
+      </div>
     </div>
-    <div><button class="primary" id="beginBtn">Begin Mission</button></div>
   </section>
 
   <!-- ROSTER -->
   <section id="s-list" hidden>
-    <div class="roster" id="roster"></div>
-    <div class="row" style="justify-content:space-between">
-      <p id="teamLine"></p>
-      <button class="primary" id="reviewBtn" disabled>Review Team</button>
+    <div class="board"><div class="roster" id="roster"></div></div>
+    <div class="tray">
+      <div class="slots" id="slots"></div>
+      <button class="primary" id="reviewBtn" disabled>Review team</button>
     </div>
   </section>
 
@@ -168,10 +212,11 @@ section#s-reflect > h3 { margin-top: 36px; }
 
   <!-- CONFIRM -->
   <section id="s-confirm" hidden>
-    <div class="pair" id="pair"></div>
+    <p class="small muted">Once you send them, the team leaves for the mountain.</p>
+    <div class="trio" id="trio"></div>
     <div class="row">
       <button id="goBackBtn">Go back</button>
-      <button class="primary" id="confirmBtn">Confirm and send</button>
+      <button class="primary" id="confirmBtn">Send them up</button>
     </div>
   </section>
 
@@ -180,48 +225,55 @@ section#s-reflect > h3 { margin-top: 36px; }
 
   <!-- REFLECTION -->
   <section id="s-reflect" hidden>
-    <p class="lead">Select any that apply.</p>
-    <div class="chips" id="shaped">
-      <button class="chip" aria-pressed="false">Name</button>
-      <button class="chip" aria-pressed="false">Appearance</button>
-      <button class="chip" aria-pressed="false">Experience</button>
-      <button class="chip" aria-pressed="false">Occupation</button>
-      <button class="chip" aria-pressed="false">Familiarity</button>
-      <button class="chip" aria-pressed="false">Specific facts</button>
-      <button class="chip" aria-pressed="false">Gut feeling</button>
+    <div>
+      <p class="q">What shaped your choice?</p>
+      <p class="muted" style="margin-top:4px">Select any that apply.</p>
+      <div class="chips" id="shaped" style="margin-top:14px">
+        <button class="chip" aria-pressed="false">Name</button>
+        <button class="chip" aria-pressed="false">Appearance</button>
+        <button class="chip" aria-pressed="false">Experience</button>
+        <button class="chip" aria-pressed="false">Occupation</button>
+        <button class="chip" aria-pressed="false">Familiarity</button>
+        <button class="chip" aria-pressed="false">Specific facts</button>
+        <button class="chip" aria-pressed="false">Gut feeling</button>
+      </div>
     </div>
-    <h3 class="caps">Did any name or first impression affect what you expected?</h3>
-    <div class="chips" id="impression">
-      <button class="chip" aria-pressed="false">Yes</button>
-      <button class="chip" aria-pressed="false">Maybe</button>
-      <button class="chip" aria-pressed="false">No</button>
+    <div style="margin-top:40px">
+      <p class="q">Did any name or first impression affect what you expected?</p>
+      <div class="chips" id="impression" style="margin-top:14px">
+        <button class="chip" aria-pressed="false">Yes</button>
+        <button class="chip" aria-pressed="false">Maybe</button>
+        <button class="chip" aria-pressed="false">No</button>
+      </div>
     </div>
-    <h1 style="margin-top:48px">What did you miss?</h1>
-    <p class="lead" style="margin-top:18px"><label for="missed">Optional short response — discuss during the playtest.</label></p>
-    <textarea id="missed" rows="3" style="margin-top:8px"></textarea>
-    <div style="margin-top:40px"><button class="primary" id="finishBtn">Finish</button></div>
+    <div style="margin-top:40px; max-width:700px">
+      <p class="q"><label for="missed">What did you miss?</label></p>
+      <p class="muted" style="margin-top:4px">Optional short response — discuss during the playtest.</p>
+      <textarea id="missed" rows="3" style="margin-top:14px"></textarea>
+    </div>
+    <div style="margin-top:36px"><button class="primary" id="finishBtn">Finish</button></div>
   </section>
 
   <!-- END -->
   <section id="s-end" hidden>
-    <div class="card"><p>Thanks for playing.</p></div>
+    <p class="scene" style="font-size:1.3rem">Thanks for playing.</p>
     <div><button class="primary" id="again">Play again</button></div>
   </section>
 </div>
 
 <script>
 (() => {
-const TOTAL = 120, TEAM = 2;
+const TOTAL = 120, TEAM = 3;
 
-// "climb" must be true for both members; each of the other three needs at least one member.
+// "climb" must be true for every member; each of the other three needs at least one member.
 const NEEDS = [
-  { k:"climb", label:"Complete the mountain journey", rule:"both members" },
+  { k:"climb", label:"Complete the mountain journey", rule:"every member" },
   { k:"talk",  label:"Communicate with villagers", rule:"at least one member" },
   { k:"anti",  label:"Anticipate hazards", rule:"at least one member" },
   { k:"med",   label:"Provide medical aid", rule:"at least one member" },
 ];
 
-// bullets: [text, need key or null if not relevant, true = helps / false = hurts]
+// bullets: [text, need key or null if not tied to a need, true = helps / false = hurts]
 // skills: what the character can do for scoring (hidden from the player until the results)
 const C = [
  { id:"magnus-steel", name:"Magnus Steel",
@@ -258,38 +310,38 @@ const C = [
    bullets:[["Completed twelve rescue deployments"],["Likes vacations by the beach"],["Led six searches in rugged terrain","climb",true],["One of three identical triplets"],["Brought an injured search party home in whiteout conditions","anti",true],["Carries a first aid kit everywhere"]] },
 ];
 const byId = Object.fromEntries(C.map(c => [c.id, c]));
-const img = c => `<img class="portrait" src="portraits/${c.id}.png" alt="Portrait of ${c.name}">`;
+const src = c => `portraits/${c.id}.png`;
+const photo = (c, caption = true) => `<figure class="photo"><span class="pin"></span><img src="${src(c)}" alt="Portrait of ${c.name}">${caption ? `<figcaption>${c.name}</figcaption>` : ""}</figure>`;
 
 let S;
-const fresh = () => ({ phase:"intro", deadline:0, team:[], viewed:new Set(), shaped:[], impression:null, missed:"" });
+const fresh = () => ({ phase:"opening", deadline:0, team:[], viewed:new Set(), shaped:[], impression:null, missed:"" });
 S = fresh();
 
 const $ = id => document.getElementById(id);
 const SCREENS = ["opening","intro","list","profile","confirm","results","reflect","end"];
-const TITLES = { opening:"", intro:"Mission Brief", list:"Candidates", profile:"Candidate Profile", confirm:"Your Team", results:"Mission Report", reflect:"What shaped your choice?", end:"Session Complete" };
-const TIMED = new Set(["intro","list","profile","confirm"]);
-const show = n => {
+const TITLES = { intro:"Your orders", list:"Guild roster", profile:"", confirm:"Send this team?", results:"Field report", reflect:"Debrief", end:"Session complete" };
+const TIMED = new Set(["list","profile","confirm"]);
+const show = (n, title) => {
   SCREENS.forEach(s => $("s-"+s).hidden = s !== n);
-  S.phase = n; if (n !== "opening") $("pageTitle").textContent = TITLES[n]; $("timer").hidden = !TIMED.has(n); scrollTo(0,0);
+  S.phase = n; $("pageTitle").textContent = title ?? TITLES[n]; $("timer").hidden = !TIMED.has(n); scrollTo(0,0);
 };
 const fmt = s => { s = Math.ceil(s); return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; };
 const join = a => a.length < 2 ? a.join("") : a.slice(0,-1).join(", ") + " and " + a[a.length-1];
 
-// ---- Opening sequence (SAMPLE TEXT: replace freely) ----
-// Art: opening/1.jpg … opening/4.jpg (web-sized copies of the scene PNGs in the same folder).
-OPENING_PRELOAD: for (let i = 1; i <= 4; i++) new Image().src = `opening/${i}.jpg`;
+// ---- Opening sequence (SAMPLE TEXT: replace freely). Art: opening/1.jpg … 4.jpg ----
+for (let i = 1; i <= 4; i++) new Image().src = `opening/${i}.jpg`;
 const OPENING = [
-  { title:"Rescue at Frostpeak", stamp:null,
+  { title:"Rescue at Frostpeak",
     text:["Most of the Frostpeak Rescue Guild is out on calls tonight.", "You’re the dispatcher on duty."],
     art:"The guildhall at night. One lamp is lit over the dispatcher’s desk." },
-  { title:"A Messenger Arrives", stamp:"Urgent",
+  { title:"A messenger arrives",
     text:["A blizzard has swept over Frostpeak. A group of villagers is stranded high on the mountain, and some of them are hurt."],
     art:"The door flies open. A messenger stumbles in, snow blowing behind them." },
-  { title:"Cut Off by the Storm", stamp:null,
+  { title:"Cut off by the storm",
     text:["The villagers speak only Orbano. The route up is icy and changing by the hour.", "Whoever goes needs to reach them, talk with them, and bring them down safely."],
     art:"Villagers huddled in a shelter on a snowy ledge, wind howling around them." },
-  { title:"Two Can Go", stamp:"2 minutes",
-    text:["Eight guild members are available. The pass will only hold for a team of two before the storm closes it.", "You have two minutes to decide who goes."],
+  { title:"Three can go",
+    text:["Eight guild members are available. The pass will only hold for a team of three before the storm closes it.", "You have two minutes to decide who goes."],
     art:"The roster board: eight name cards pinned in a row." },
 ];
 let sceneIdx = 0;
@@ -297,34 +349,41 @@ function renderOpening() {
   const s = OPENING[sceneIdx], last = sceneIdx === OPENING.length - 1, n = sceneIdx + 1;
   $("s-opening").innerHTML = `
     <div class="scene">
-      <div class="scene-art filled rise"><img src="opening/${n}.jpg" alt="${s.art}"></div>
-      ${s.stamp ? `<span class="stamp rise" style="animation-delay:.25s">${s.stamp}</span>` : ""}
-      ${s.text.map((t, i) => `<p class="rise" style="animation-delay:${.35 + i * .45}s">${t}</p>`).join("")}
-      <div class="row rise" style="justify-content:space-between;animation-delay:${.4 + s.text.length * .45}s">
-        <div class="dots">${OPENING.map((_, i) => `<i class="${i === sceneIdx ? "on" : ""}"></i>`).join("")}</div>
+      <figure class="scene-art"><img src="opening/${n}.jpg" alt="${s.art}"></figure>
+      <div class="fade" style="margin-top:24px">${s.text.map(t => `<p>${t}</p>`).join("")}</div>
+      <div class="row spread" style="margin-top:28px">
+        <span class="muted small">${n} of ${OPENING.length}</span>
         <div class="row">
-          ${last ? "" : `<button id="skipBtn">Skip intro</button>`}
-          <button class="primary" id="sceneNext">${last ? "Read the mission brief" : "Next"}</button>
+          ${last ? "" : `<button id="skipBtn">Skip</button>`}
+          <button class="primary" id="sceneNext">${last ? "Read your orders" : "Next"}</button>
         </div>
       </div>
     </div>`;
-  $("pageTitle").textContent = s.title;
+  show("opening", s.title);
   $("sceneNext").onclick = () => { if (last) show("intro"); else { sceneIdx++; renderOpening(); } };
   if (!last) $("skipBtn").onclick = () => show("intro");
 }
-show("opening"); renderOpening();
+renderOpening();
 
-// ---- Timer ----
+// ---- Timer (clock face with a shrinking red wedge, like the clock in the roster art) ----
 let tick;
+function drawClock(frac) {
+  const a = 2 * Math.PI * frac, r = 21, x = 25 + r * Math.sin(a), y = 25 - r * Math.cos(a);
+  $("wedge").setAttribute("d", frac >= .999 ? `M25 4a21 21 0 1 1 0 42a21 21 0 1 1 0-42z`
+    : frac <= 0 ? "" : `M25 25L25 4A21 21 0 ${a > Math.PI ? 1 : 0} 1 ${x.toFixed(2)} ${y.toFixed(2)}z`);
+  const hx = 25 + 17 * Math.sin(a), hy = 25 - 17 * Math.cos(a);
+  $("hand").setAttribute("x2", hx.toFixed(2)); $("hand").setAttribute("y2", hy.toFixed(2));
+}
 function onTick() {
   const r = Math.max(0, (S.deadline - Date.now()) / 1000);
   $("clock").textContent = fmt(r);
   $("timer").classList.toggle("low", r <= 30);
+  drawClock(r / TOTAL);
   if (r <= 0) results(true);
 }
 $("beginBtn").onclick = () => {
   S = fresh(); S.deadline = Date.now() + TOTAL*1000;
-  clearInterval(tick); tick = setInterval(onTick, 200); onTick();
+  clearInterval(tick); tick = setInterval(onTick, 250); onTick();
   renderRoster(); show("list");
 };
 
@@ -332,11 +391,15 @@ $("beginBtn").onclick = () => {
 function renderRoster() {
   $("roster").innerHTML = C.map(c => {
     const on = S.team.includes(c.id);
-    const note = on ? "On your team" : S.viewed.has(c.id) ? "Viewed" : "Not viewed";
-    return `<button class="person${on ? " on" : ""}" data-id="${c.id}">${img(c)}<b>${c.name}</b><small>${note}</small></button>`;
+    const note = on ? "On your team" : S.viewed.has(c.id) ? "Read" : "";
+    return `<button class="card-btn${on ? " on" : ""}" data-id="${c.id}" aria-label="${c.name}${note ? ", " + note : ""}">
+      <figure class="photo"><span class="pin"></span><img src="${src(c)}" alt=""><span class="cap">${c.name}</span><span class="status">${note || "&nbsp;"}</span></figure></button>`;
   }).join("");
-  $("roster").querySelectorAll(".person").forEach(b => b.onclick = () => openProfile(b.dataset.id));
-  $("teamLine").innerHTML = `<b>Your team (${S.team.length}/${TEAM}):</b> ${S.team.length ? join(S.team.map(id => byId[id].name)) : "<span class='muted'>no one yet</span>"}`;
+  $("roster").querySelectorAll(".card-btn").forEach(b => b.onclick = () => openProfile(b.dataset.id));
+  $("slots").innerHTML = Array.from({ length: TEAM }, (_, i) => {
+    const c = byId[S.team[i]];
+    return c ? `<span class="slot"><img src="${src(c)}" alt="">${c.name}</span>` : `<span class="slot empty">Open spot</span>`;
+  }).join("");
   $("reviewBtn").disabled = S.team.length !== TEAM;
 }
 $("reviewBtn").onclick = () => { if (S.team.length === TEAM) openConfirm(); };
@@ -347,11 +410,14 @@ function openProfile(id) {
   const on = S.team.includes(id), full = S.team.length >= TEAM && !on;
   $("s-profile").innerHTML = `
     <div class="profile">
-      <div>${img(c)}<h2>${c.name}</h2></div>
-      <div class="card bullets"><ul>${c.bullets.map(b => `<li>${b[0]}</li>`).join("")}</ul></div>
+      ${photo(c, false)}
+      <div class="sheet">
+        <div class="sheet-label">Guild record</div>
+        <ul class="ledger">${c.bullets.map(b => `<li>${b[0]}</li>`).join("")}</ul>
+      </div>
     </div>
     <div class="row">
-      <button id="backBtn">Back to candidates</button>
+      <button id="backBtn">Back to roster</button>
       <button class="primary" id="toggleBtn" ${full ? "disabled" : ""}>${on ? "Remove from team" : "Add to team"}</button>
       ${full ? `<span class="muted small">Your team is full. Remove someone to add ${c.name}.</span>` : ""}
     </div>`;
@@ -360,19 +426,19 @@ function openProfile(id) {
     if (on) S.team = S.team.filter(x => x !== id); else if (S.team.length < TEAM) S.team.push(id);
     renderRoster(); show("list");
   };
-  show("profile");
+  show("profile", c.name);
 }
 
 // ---- Confirm ----
 function openConfirm() {
-  $("pair").innerHTML = S.team.map(id => `<div>${img(byId[id])}<h2>${byId[id].name}</h2></div>`).join("");
+  $("trio").innerHTML = S.team.map(id => `<div>${photo(byId[id])}</div>`).join("");
   show("confirm");
 }
 $("goBackBtn").onclick = () => { renderRoster(); show("list"); };
 $("confirmBtn").onclick = () => results(false);
 
-// ---- Results: five steps, computed from the profile tags so every one of the 28 pairs gets its own feedback ----
-const quotes = (c, k, pos = true) => c.bullets.filter(b => b[1] === k && b[2] === pos).map(b => `“${b[0]}”`);
+// ---- Field report: computed from the profile tags, so every possible team of 3 gets its own feedback ----
+const quotes = (c, k) => c.bullets.filter(b => b[1] === k && b[2]).map(b => `“${b[0]}”`);
 const needName = k => NEEDS.find(n => n.k === k).label.toLowerCase();
 const MISSED = {
   climb:"could not complete the mountain journey, so the team had to slow down and turn back for them.",
@@ -389,68 +455,78 @@ function results(timeUp) {
   const status = NEEDS.map(n => ({ n,
     ok: n.k === "climb" ? team.length === TEAM && cant.length === 0 : team.some(c => c.skills[n.k]) }));
   R = { team, cant, status, timeUp, met: status.filter(s => s.ok).length, step: 0 };
-  show("results"); renderStep();
+  renderStep();
 }
 
 function stepOutcome() {
   const { team, cant, status, timeUp, met } = R;
-  const missing = status.filter(s => !s.ok && s.n.k !== "climb");
   const lines = [];
-  if (timeUp) lines.push(`Time ran out, so your team was sent with ${team.length} of ${TEAM} members.`);
+  if (timeUp) lines.push(`Time ran out, so your team left with ${team.length} of ${TEAM} members.`);
   if (team.length && !cant.length) lines.push("Your team reached the stranded villagers.");
   cant.forEach(c => lines.push(`${c.name} ${MISSED.climb}`));
-  missing.forEach(s => lines.push(MISSED[s.n.k]));
-  return `<h2>${met} of 4 mission needs met</h2>
-    <div class="card">${status.map(s => `<div class="need"><span class="mark ${s.ok ? "ok" : "no"}">${s.ok ? "✓" : "✗"}</span><b>${s.n.label} <span class="tag">(${s.n.rule})</span></b></div>`).join("")}</div>
-    <div class="card"><ul class="needs">${lines.map(l => `<li>${l}</li>`).join("")}</ul></div>`;
+  status.filter(s => !s.ok && s.n.k !== "climb").forEach(s => lines.push(MISSED[s.n.k]));
+  if (met === 4) lines.push("Everyone came down the mountain safely.");
+  return { title: met === 4 ? "Everyone made it home" : `${met} of 4 needs met`, body: `
+    <div class="brief">
+      <div class="sheet"><div class="sheet-label">What happened</div>${lines.map(l => `<p style="margin-top:12px">${l}</p>`).join("")}</div>
+      <div class="sheet"><div class="sheet-label">The rescue needed to</div>
+        ${status.map(s => `<div class="need-row"><span class="mk ${s.ok ? "ok" : "no"}">${s.ok ? "✓" : "✗"}</span><span><b>${s.n.label}</b><br><span class="muted small">${s.n.rule}</span></span></div>`).join("")}</div>
+    </div>` };
 }
 function stepMember(c) {
-  if (!c) return `<h2>No second team member</h2><div class="card"><p>Time ran out before you chose a second member.</p></div>`;
+  if (!c) return { title:"An empty spot", body:`<div class="sheet"><p>Time ran out before this spot on the team was filled.</p></div>` };
   const helped = NEEDS.filter(n => c.skills[n.k]);
   const hurts = c.bullets.filter(b => b[1] && !b[2]);
   const other = c.bullets.filter(b => !b[1]);
-  return `<div class="member-head" style="border:0;padding:0">${img(c)}<h2>${c.name}</h2></div>
-    <div class="card member">
-      <div><div class="label">What ${c.name} contributed</div>
-        ${helped.length ? `<ul>${helped.map(n => `<li><b>${n.label}:</b> ${quotes(c, n.k).join(", ")}</li>`).join("")}</ul>`
-          : `<p style="margin-top:6px">Nothing in the profile showed ${c.name} could complete the mountain journey.</p>`}</div>
-      ${hurts.length ? `<div><div class="label">What held them back</div><ul>${hurts.map(b => `<li>“${b[0]}” <span class="tag hurts">${needName(b[1])}</span></li>`).join("")}</ul></div>` : ""}
-      ${other.length ? `<div><div class="label">Not tied to a mission need</div><ul>${other.map(b => `<li>${b[0]}</li>`).join("")}</ul></div>` : ""}
-    </div>`;
+  return { title: c.name, body: `
+    <div class="member">
+      ${photo(c, false)}
+      <div class="sheet">
+        <p class="sub">What ${c.name} brought</p>
+        ${helped.length ? `<ul class="plain">${helped.map(n => `<li><b>${n.label}:</b> ${quotes(c, n.k).join(", ")}</li>`).join("")}</ul>`
+          : `<p style="margin-top:6px">Nothing in the record showed ${c.name} could complete the mountain journey.</p>`}
+        ${hurts.length ? `<p class="sub">What held them back</p><ul class="plain">${hurts.map(b => `<li>“${b[0]}” <span class="hurt">${needName(b[1])}</span></li>`).join("")}</ul>` : ""}
+        ${other.length ? `<p class="sub">Not tied to a mission need</p><ul class="plain muted">${other.map(b => `<li>${b[0]}</li>`).join("")}</ul>` : ""}
+      </div>
+    </div>` };
 }
 function stepMissed() {
   const gaps = R.status.filter(s => !s.ok);
-  if (!gaps.length) return `<h2>What your team missed</h2><div class="card"><p>Your team covered every need.</p></div>`;
-  return `<h2>What your team missed</h2>
-    <p class="muted">The evidence was in these profiles.</p>
-    <div class="card">${gaps.map(s => {
+  if (!gaps.length) return { title:"Nothing missed", body:`<div class="sheet"><p>Your team covered every need.</p></div>` };
+  return { title:"What your team missed", body: `
+    <p class="muted">The evidence was in these records.</p>
+    <div class="sheet">${gaps.map(s => {
+      let detail;
       if (s.n.k === "climb") {
-        const parts = R.cant.map(c => `${c.name}’s profile had nothing about climbing or hiking.`);
+        const parts = R.cant.map(c => `${c.name}’s record had nothing about climbing or hiking.`);
         if (R.team.length < TEAM) parts.push(`Only ${R.team.length} of ${TEAM} members were chosen.`);
-        return `<div class="need"><span class="mark no">✗</span><b>${s.n.label}</b><span></span><span>${parts.join(" ")}</span></div>`;
+        detail = `<p>${parts.join(" ")}</p>`;
+      } else {
+        const had = C.filter(c => c.skills[s.n.k] && !S.team.includes(c.id));
+        detail = `<ul class="plain">${had.map(c => `<li><b>${c.name}:</b> ${quotes(c, s.n.k).join(", ")}${c.skills.climb ? "" : ` <span class="hurt">but could not complete the journey</span>`}</li>`).join("")}</ul>`;
       }
-      const had = C.filter(c => c.skills[s.n.k] && !S.team.includes(c.id));
-      return `<div class="need"><span class="mark no">✗</span><b>${s.n.label}</b><span></span>
-        <ul style="padding-left:1.2em">${had.map(c => `<li>${c.name}: ${quotes(c, s.n.k).join(", ")}${c.skills.climb ? "" : " <span class='tag hurts'>(but could not complete the journey)</span>"}</li>`).join("")}</ul></div>`;
-    }).join("")}</div>`;
+      return `<div class="need-row"><span class="mk no">✗</span><span><b>${s.n.label}</b>${detail}</span></div>`;
+    }).join("")}</div>` };
 }
 function stepNames() {
-  return `<h2>Names and first impressions</h2>
-    ${R.team.length ? `<div class="members">${R.team.map(c => `<div class="card member"><div class="member-head">${img(c)}<h3>${c.name}</h3></div>
-      <div><div class="label">Why we chose this name</div><p style="margin-top:4px">${c.why}</p></div></div>`).join("")}</div>` : ""}
-    <h3>What every profile showed</h3>
-    <div class="card tbl"><table>
-      <tr><th>Candidate</th>${NEEDS.map(n => `<th>${n.label}</th>`).join("")}</tr>
-      ${C.map(c => `<tr><td>${c.name}${S.team.includes(c.id) ? " <span class='tag'>(your team)</span>" : ""}</td>${NEEDS.map(n => `<td class="c">${c.skills[n.k] ? "✓" : ""}</td>`).join("")}</tr>`).join("")}
-    </table></div>`;
+  return { title:"Names and first impressions", body: `
+    ${R.team.length ? `<div class="names-grid">${R.team.map(c => `<div class="sheet"><p class="sub">${c.name}</p><p style="margin-top:6px">${c.why}</p></div>`).join("")}</div>` : ""}
+    <div class="sheet tbl"><div class="sheet-label">What every record showed</div><table>
+      <tr><th>Guild member</th>${NEEDS.map(n => `<th>${n.label}</th>`).join("")}</tr>
+      ${C.map(c => `<tr class="${S.team.includes(c.id) ? "mine" : ""}"><td>${c.name}${S.team.includes(c.id) ? ` <span class="muted small">(your team)</span>` : ""}</td>${NEEDS.map(n => `<td class="c">${c.skills[n.k] ? "✓" : ""}</td>`).join("")}</tr>`).join("")}
+    </table></div>` };
 }
 function renderStep() {
-  const steps = [stepOutcome, () => stepMember(R.team[0]), () => stepMember(R.team[1]), stepMissed, stepNames];
-  const i = R.step, last = i === steps.length - 1;
-  $("s-results").innerHTML = `<p class="label">Step ${i + 1} of ${steps.length}</p>${steps[i]()}
-    <div class="row">${i ? `<button id="prevStep">Back</button>` : ""}<button class="primary" id="nextStep">${last ? "Continue to reflection" : "Next"}</button></div>`;
-  if (i) $("prevStep").onclick = () => { R.step--; renderStep(); scrollTo(0,0); };
-  $("nextStep").onclick = () => { if (last) show("reflect"); else { R.step++; renderStep(); scrollTo(0,0); } };
+  const steps = [stepOutcome, ...Array.from({ length: TEAM }, (_, i) => () => stepMember(R.team[i])), stepMissed, stepNames];
+  const i = R.step, last = i === steps.length - 1, s = steps[i]();
+  $("s-results").innerHTML = `${s.body}
+    <div class="row spread">
+      <span class="muted small">Report page ${i + 1} of ${steps.length}</span>
+      <div class="row">${i ? `<button id="prevStep">Back</button>` : ""}<button class="primary" id="nextStep">${last ? "Go to debrief" : "Next"}</button></div>
+    </div>`;
+  show("results", s.title);
+  if (i) $("prevStep").onclick = () => { R.step--; renderStep(); };
+  $("nextStep").onclick = () => { if (last) show("reflect"); else { R.step++; renderStep(); } };
 }
 
 // ---- Reflection ----
